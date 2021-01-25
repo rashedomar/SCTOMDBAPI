@@ -1,0 +1,32 @@
+<div clsss="container">
+    <div class="search">
+        <input type="text" class="search__input" placeholder="Search a movie..." [formControl]="searchField" />
+        <button class="btn btn-primary" (click)="search()"> Search </button>   
+ </div>
+    <ng-container *ngIf="results.length > 0 && isLoading == false">
+        <div class="result">
+            <div *ngFor="let movie of results" class="card" (click)="moviedetails(movie.imdbID)">
+                <img src={{movie.Poster}} class="card__poster">
+                <p>{{(movie.Title.length>13)? (movie.Title | slice:0:13)+'..':(movie.Title)}}</p>
+            </div>
+        </div>
+        <div class="pagination">
+            <button class="pagination__button button" (click)="loadPage(-1)"
+                [disabled]="page == 1 || results.length == 0">Prev</button>
+            <h5> - {{page}} - </h5>
+            <button class="pagination__button button" (click)=" loadPage(1) "
+                [disabled]="results.length == 0 || results.length < 10">Next</button>
+        </div>
+    </ng-container>
+    <div class="no-movie" *ngIf="results.length == 0 && firstLoad == true">
+        <img src="assets/search.svg">
+    </div>
+    <div class="no-movie" *ngIf="results.length == 0 && firstLoad != true">
+        <img src="assets/empty.svg">
+    </div>
+    <div *ngIf="isLoading == true">
+        <div class="spinner-container">
+            <div id="loader"></div>
+        </div>
+    </div>
+</div>
